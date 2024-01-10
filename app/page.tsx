@@ -1,113 +1,77 @@
-import Image from 'next/image'
+'use client'
+
+import { Button } from "./materialTailwind"
+import { useRouter } from 'next/navigation'
+import roboBankJson from './lib/contracts/RoboBank.sol/RoboBank.json'
+import roboNFTJson from './lib/contracts/RoboNFT.sol/RoboNFT.json'
+import roboMarketJson from './lib/contracts/RoboMarket.sol/RoboMarket.json'
+import { useContext } from "react"
+import { commonContext } from "./layout"
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const { ethers } = require('ethers');
+  const {setRoboBankContract, 
+         setRoboNFTContract, 
+         setRoboMarketContract,
+         setCommanderDna,
+         setAccount} = useContext(commonContext);
+
+  const startApp = async () => {
+
+    // 检查 MetaMask 是否已安装
+    if (typeof window.ethereum === 'undefined') {
+      alert('MetaMask not detected! Please insall it.');
+      return;  
+    }
+
+    // MetaMask requires requesting permission to connect users accounts
+    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+    setAccount(provider.getSigner().getAddress())
+
+    // 部署智能合约时生成的地址
+    const roboBankAddress = '0x82e01223d51Eb87e16A03E24687EDF0F294da6f1';
+    const roboNFTAddress = '0x2bdCC0de6bE1f7D2ee689a0342D76F52E8EFABa3';
+    const roboMarketAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
+    // 使用合约地址和 ABI 连接到智能合约
+    const roboBankContract = new ethers.Contract(roboBankAddress, roboBankJson.abi, provider.getSigner());
+    const roboNFTContract = new ethers.Contract(roboNFTAddress, roboNFTJson.abi, provider.getSigner());
+    const roboMarketContract = new ethers.Contract(roboMarketAddress, roboMarketJson.abi, provider.getSigner());
+    setRoboBankContract(roboBankContract)
+    setRoboNFTContract(roboNFTContract)
+    setRoboMarketContract(roboMarketContract)
+
+    const commanderId = await roboNFTContract.ownerToCommander(provider.getSigner().getAddress());
+    if (commanderId.eq(0)) {
+      setCommanderDna("111")
+    } else {
+      const commanderInfo = await roboNFTContract.commanders(commanderId); 
+      setCommanderDna(commanderInfo.dna);      
+    }
+    router.push('/workbench');
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div className='w-max mx-auto mt-40'>
+        <div className="mx-auto">
+          <span className="text-4xl text-blue-500">Welcom </span>
+          <span className="text-4xl text-red-500">To </span>
+          <span className="text-4xl text-orange-500">Robohash </span>
+          <span className="text-4xl text-green-500">Web3.0</span>
+        </div>
+        <br></br>
+        <br></br>
+        <div className="w-max mx-auto">
+          <Button onClick={startApp} size="lg" color="orange" className="flex items-center gap-3" placeholder={undefined}>
+            <img src="https://robohash.org/111?set=set5" alt="app" className="h-10 w-10" />            
+            Start Application
+          </Button>
         </div>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    </>)
 }

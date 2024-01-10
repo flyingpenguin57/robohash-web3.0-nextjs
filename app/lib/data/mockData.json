@@ -1,0 +1,57 @@
+{
+    "ranking": [
+        {
+            "id":0,
+            "robotId":0,
+            "stars":10000
+        },
+        {
+            "id":1,
+            "robotId":1,
+            "stars":9999
+        },
+        {
+            "id":0,
+            "robotId":2,
+            "stars":8888
+        },
+        {
+            "id":0,
+            "robotId":3,
+            "stars":8881
+        },
+        {
+            "id":0,
+            "robotId":0,
+            "stars":1000
+        },
+        {
+            "id":0,
+            "robotId":0,
+            "stars":999
+        },
+        {
+            "id":0,
+            "robotId":0,
+            "stars":888
+        },
+        {
+            "id":0,
+            "robotId":0,
+            "stars":777
+        },
+        {
+            "id":0,
+            "robotId":0,
+            "stars":666
+        },
+        {
+            "id":0,
+            "robotId":0,
+            "stars":665
+        }
+    ],
+    "market": [
+
+    ]
+}
