@@ -1,32 +1,10 @@
 'use client'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { createContext, useState } from 'react'
+import { useState } from 'react'
+import { commonContext } from './commonContext'
 
 const inter = Inter({ subsets: ['latin'] })
-export const commonContext = createContext<{
-  account: any,
-  setAccount: any,
-  roboBankContract: any,
-  setRoboBankContract: any,
-  roboNFTContract: any,
-  setRoboNFTContract: any,
-  roboMarketContract: any,
-  setRoboMarketContract: any,
-  commanderDna: any,
-  setCommanderDna: any,
-}>({
-  account: undefined,
-  setAccount: undefined,
-  roboBankContract: undefined,
-  setRoboBankContract: undefined,
-  roboNFTContract: undefined,
-  setRoboNFTContract: undefined,
-  roboMarketContract: undefined,
-  setRoboMarketContract: undefined,
-  commanderDna: undefined,
-  setCommanderDna: undefined
-})
 
 export default function RootLayout({
   children,
@@ -46,8 +24,8 @@ export default function RootLayout({
     }}>
       <html lang="en">
         <head>
-          <title>RoboHash in Web3</title>
-          <link rel='icon' href='https://robohash.org/4765789'></link>
+          <title>HashCat</title>
+          <link rel='icon' href='https://robohash.org/114.235.181.234.png?set=set4'></link>
         </head>
         <body className={inter.className}>{children}</body>
       </html>

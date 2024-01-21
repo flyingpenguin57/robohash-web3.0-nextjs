@@ -1,7 +1,7 @@
 'use client'
 import { useContext, useState } from "react";
 import { Input, Button } from "../materialTailwind";
-import { commonContext } from "../layout";
+import { commonContext } from "../commonContext";
 
 function CreateRobotCard() {
 
@@ -34,14 +34,14 @@ function CreateRobotCard() {
     return (
         <div className="flex justify-center items-center">
             <div>
-                <img className="mx-auto h-52" src={`https://robohash.org/${inputValue}`} alt="robot" />
+                <img className="mx-auto h-52" src={`https://robohash.org/${inputValue}?set=set4`} alt="robot" />
             </div>
             <div className="w-96">
                 <div className="w-max mx-auto">
                     <Input color="orange" label="Input dna" onInput={handleInputChange} className="" crossOrigin={undefined} />
                 </div>
                 <div className="w-max mx-auto">
-                    <Button onClick={createRobot} color="orange" className="mt-6" placeholder={undefined}>Create Robot</Button>
+                    <Button onClick={createRobot} color="orange" className="mt-6" placeholder={undefined}>Create Cat</Button>
                 </div>
             </div>
         </div>

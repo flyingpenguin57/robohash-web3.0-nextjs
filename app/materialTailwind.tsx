@@ -16,6 +16,7 @@ import {
     CardFooter,
     Tooltip,
     Input,
+    Chip
 } from "@material-tailwind/react";
  
 export { 
@@ -34,4 +35,5 @@ export {
     CardFooter,
     Tooltip,
     Input,
+    Chip
 };

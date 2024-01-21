@@ -8,19 +8,20 @@ import {
   Button,
   IconButton,
 } from "../materialTailwind";
-import { commonContext } from "../layout";
+import { commonContext } from "../commonContext";
+import { useRouter } from "next/navigation";
 
 function getRandomInt(min: number, max: number) {
   // 使用 Math.floor() 向下取整，Math.random() 返回一个介于 0（包括）和 1（不包括）之间的随机浮点数
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function RobotCardWithLike(key: any, dna: any, stars: any) {
+function RobotCardWithLike(key: any, dna: any, id: any) {
   return (
-    <Card key={key} className="w-52 max-w-[26rem] shadow-lg bg-orange-300" placeholder={undefined}>
+    <Card key={key} className="w-52 max-w-[26rem] shadow-lg bg-orange-400" placeholder={undefined}>
       <CardHeader floated={false} color="white" placeholder={undefined}>
         <img
-          src={`https://robohash.org/${dna}`}
+          src={`https://robohash.org/${dna}?set=set4`}
           alt="robot"
           className="h-40"
         />
@@ -47,13 +48,13 @@ function RobotCardWithLike(key: any, dna: any, stars: any) {
         <div className="mb-3 flex items-center justify-center">
           <Typography
             color="blue-gray"
-            className="flex items-center gap-1.5 font-normal" placeholder={undefined}              >
-            {stars}
+            className="flex items-center gap-1.5 font-normal text-gray-700" placeholder={undefined}              >
+            ID:{id}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="-mt-0.5 h-5 w-5 text-red-500"
+              className="-mt-0.5 h-5 w-5 text-blue-500"
             >
               <path
                 fillRule="evenodd"
@@ -73,40 +74,57 @@ export default function RobotRecommand() {
   const [randomRobots, setRandomRobots] = useState<any>();
   const { roboNFTContract } = useContext(commonContext);
 
+  const router = useRouter()
+
   useEffect(() => {
     const fetchData = async () => {
+
+      if (roboNFTContract === undefined) {
+        router.push('/')
+        return
+      }
+
       try {
         const array = [];
-        let j = 4;
+        const r = await roboNFTContract.totalSupply();
+        console.log(r)
+        let j = r.toNumber();
+        console.log(j)
         const index = getRandomInt(0, j);
+        console.log(index)
         const robot = await roboNFTContract.robots(index);
         console.log(robot)
-        array.push(robot);
+        array.push([index, robot]);
 
         const index1 = getRandomInt(0, j);
+        console.log(index1)
         const robot1 = await roboNFTContract.robots(index1);
         console.log(robot1)
-        array.push(robot1)
+        array.push([index1, robot1])
 
         const index2 = getRandomInt(0, j);
+        console.log(index2)
         const robot2 = await roboNFTContract.robots(index2);
         console.log(robot2)
-        array.push(robot2)
+        array.push([index2, robot2])
 
         const index3 = getRandomInt(0, j);
+        console.log(index3)
         const robot3 = await roboNFTContract.robots(index3);
         console.log(robot3)
-        array.push(robot3)
+        array.push([index3, robot3])
 
         const index4 = getRandomInt(0, j);
+        console.log(index4)
         const robot4 = await roboNFTContract.robots(index4);
         console.log(robot4)
-        array.push(robot4)
+        array.push([index4, robot4])
 
         const index5 = getRandomInt(0, j);
+        console.log(index5)
         const robot5 = await roboNFTContract.robots(index5);
         console.log(robot5)
-        array.push(robot5)
+        array.push([index5, robot5])
 
         setRandomRobots(array);
         console.log(randomRobots)
@@ -121,7 +139,9 @@ export default function RobotRecommand() {
   const changeBatch = async() => {
     console.log("start change a batch")
     const array = [];
-    let j = 4;
+    const r = await roboNFTContract.totalSupply();
+    console.log(r)
+    let j = r.toNumber();
     // for (let i = 0; i++; i<6) {
     //   const index = getRandomInt(0, j);
     //   const robot = await roboNFTContract.robots(index);
@@ -131,41 +151,41 @@ export default function RobotRecommand() {
     const index = getRandomInt(0, j);
     const robot = await roboNFTContract.robots(index);
     console.log(robot)
-    array.push(robot);
+    array.push([index, robot]);
 
     const index1 = getRandomInt(0, j);
     const robot1 = await roboNFTContract.robots(index1);
     console.log(robot1)
-    array.push(robot1)
+    array.push([index1, robot1])
 
     const index2 = getRandomInt(0, j);
     const robot2 = await roboNFTContract.robots(index2);
     console.log(robot2)
-    array.push(robot2)
+    array.push([index2, robot2])
 
     const index3 = getRandomInt(0, j);
     const robot3 = await roboNFTContract.robots(index3);
     console.log(robot3)
-    array.push(robot3)
+    array.push([index3, robot3])
 
     const index4 = getRandomInt(0, j);
     const robot4 = await roboNFTContract.robots(index4);
     console.log(robot4)
-    array.push(robot4)
+    array.push([index4, robot4])
 
     const index5 = getRandomInt(0, j);
     const robot5 = await roboNFTContract.robots(index5);
     console.log(robot5)
-    array.push(robot5)
+    array.push([index5, robot5])
 
     setRandomRobots(array)
   }
 
   return (
     <>
-      <div className="flex justify-center gap-2 flex-wrap mt-6">
+      <div className="flex justify-center gap-2 flex-wrap mt-6 w-full md:w-2/3 mx-auto">
         {randomRobots?.map((robot: any, index: any) => {
-          return RobotCardWithLike(index, robot, 8888);
+          return RobotCardWithLike(index, robot[1], robot[0]);
         })}
       </div>
       <div className="flex justify-center my-6">

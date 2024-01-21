@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useContext } from "react";
 import {
   Navbar,
   Collapse,
@@ -8,18 +9,17 @@ import {
 } from "../materialTailwind";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
-import { commonContext } from "../layout";
-
+import { commonContext } from "../commonContext";
+ 
 function NavList() {
 
   const router = useRouter()
-
+  
   return (
     <ul className="my-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
-        variant="paragraph"
+        variant="small"
         color="white"
         className="p-1 font-medium" placeholder={undefined}      >
         <p onClick={() => {
@@ -30,7 +30,18 @@ function NavList() {
       </Typography>
       <Typography
         as="li"
-        variant="paragraph"
+        variant="small"
+        color="white"
+        className="p-1 font-medium" placeholder={undefined}      >
+        <p onClick={() => {
+          router.push('/workbench/zookeeper')
+        }} className="flex items-center hover:text-red-500 hover:cursor-pointer transition-colors">
+          Zookeeper
+        </p>
+      </Typography>
+      <Typography
+        as="li"
+        variant="small"
         color="white"
         className="p-1 font-medium" placeholder={undefined}      >
         <p onClick={() => {
@@ -41,55 +52,55 @@ function NavList() {
       </Typography>
       <Typography
         as="li"
-        variant="paragraph"
+        variant="small"
         color="white"
         className="p-1 font-medium" placeholder={undefined}      >
         <p onClick={() => {
-          router.push('/workbench/personalCenter')
+          router.push('/workbench/randomCats')
         }} className="flex items-center hover:text-red-500 hover:cursor-pointer transition-colors">
-          Personal Center
+          Recommand
         </p>
       </Typography>
     </ul>
   );
 }
-
+ 
 export function NavbarSimple() {
-
-  const {commanderDna} = useContext(commonContext);
 
   const router = useRouter()
 
-  const [openNav, setOpenNav] = React.useState(false);
+  const {commanderDna} = useContext(commonContext)
 
+  const [openNav, setOpenNav] = React.useState(false);
+ 
   const handleWindowResize = () =>
     window.innerWidth >= 960 && setOpenNav(false);
-
+ 
   React.useEffect(() => {
     window.addEventListener("resize", handleWindowResize);
-
+ 
     return () => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
-
+ 
   return (
-    <Navbar className="mx-auto max-w-screen-xl px-6 py-3 bg-orange-500" placeholder={undefined}>
+    <Navbar className="mx-auto max-w-screen-xl px-6 py-3" color="orange" placeholder={undefined}>
       <div className="flex items-center justify-between text-white">
         <div className="flex">
-          <Typography
+        <Typography
             variant="h6"
             className="mr-4 cursor-pointer py-1.5"
             onClick={() => {
               router.push('/');
-            }} placeholder={undefined}        >
-            RoboHashWeb3.0
-          </Typography>
-          <img
-            className="h-10 w-10 rounded-full object-cover object-center"
-            src={`https://robohash.org/${commanderDna}?set=set5`}
-            alt="commander header"
-          />        </div>
+            } } placeholder={undefined}        >
+          HashCatWeb3.0
+        </Typography>
+        <img
+      className="h-10 w-10 rounded-full object-cover object-center"
+      src={`https://robohash.org/${commanderDna}?set=set5`}
+      alt="commander header"
+    />        </div>
         <div className="hidden lg:block">
           <NavList />
         </div>
