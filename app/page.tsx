@@ -73,6 +73,7 @@ export default function Home() {
             Start Application
           </Button>
         </div>
+        <div className="mt-10 w-max mx-auto text-gray-500" color='blue'>Notice:Only Supproted in Goerli Test Network</div>
       </div>
     </>)
 }
